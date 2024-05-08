@@ -1,0 +1,12 @@
+.list-item {
+    list-style-type: space-counter;
+    display: inline;
+    margin-left: 20px;
+    background-color: red;
+    padding: 1em;
+}
+
+.listItem:hover {
+    background-color: azure;
+    cursor: pointer;
+}
