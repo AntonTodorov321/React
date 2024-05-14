@@ -7,7 +7,7 @@ export default function Header() {
             <nav>
                 <Link to="/games">All games</Link>
                 <div id="user">
-                    <Link to ="/crate">Create</Link>
+                    <Link to ="/create">Create</Link>
                     <Link to ="/logout">Logout</Link>
                 </div>
                 <div id="guest">
