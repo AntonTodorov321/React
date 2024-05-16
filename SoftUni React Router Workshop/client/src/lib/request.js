@@ -1,4 +1,4 @@
-const buildOptions = (method, data) => {
+const buildOptions = (data) => {
     const options = {};
 
     if (data) {
