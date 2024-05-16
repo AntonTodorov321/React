@@ -1,4 +1,7 @@
+import { Link } from "react-router-dom"
+
 export default function GameListItem({
+    _id,
     title,
     category,
     imageUrl
@@ -9,8 +12,8 @@ export default function GameListItem({
                 <img src={imageUrl} />
                 <h6>{title}</h6>
                 <h2>{category}</h2>
-                <a href="#" className="details-button">Details</a>
+                <Link to={`${_id}`} className="details-button">Details</Link>
             </div>
-        </div>
+        </div >
     );
 };
