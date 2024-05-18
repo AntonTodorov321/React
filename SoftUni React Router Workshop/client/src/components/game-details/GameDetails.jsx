@@ -4,10 +4,16 @@ import { useParams } from "react-router-dom";
 import * as gameService from "../../services/gameService";
 import * as commentService from "../../services/commentServices";
 
+const initialState = {
+    username: '',
+    comment: ''
+}
+
 export default function () {
     const { gameId } = useParams();
     const [comments, setComments] = useState([]);
     const [game, setGame] = useState({});
+    const [formValues, setFormValues] = useState(initialState);
 
     useEffect(() => {
         gameService.getOne(gameId)
@@ -17,6 +23,10 @@ export default function () {
             .then(setComments);
 
     }, [gameId]);
+
+    const resetFormHandler = () => {
+        setFormValues(initialState);
+    }
 
     const addCommentHandler = async (e) => {
         e.preventDefault();
@@ -30,6 +40,15 @@ export default function () {
         );
 
         setComments(state => [...state, newComment]);
+        resetFormHandler();
+    };
+
+
+    const changeHandler = (e) => {
+        setFormValues((state) => ({
+            ...state,
+            [e.target.name]: e.target.value
+        }));
     };
 
     return (
@@ -64,8 +83,8 @@ export default function () {
             <article className="create-comment">
                 <label>Add new comment:</label>
                 <form className="form" onSubmit={addCommentHandler}>
-                    <input type="text" name="username" placeholder="username" />
-                    <textarea name="comment" placeholder="Comment......"></textarea>
+                    <input type="text" name="username" placeholder="username" onChange={changeHandler} value={formValues.username} />
+                    <textarea name="comment" placeholder="Comment......" onChange={changeHandler} value={formValues.comment} />
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
             </article>
