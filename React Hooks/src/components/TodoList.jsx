@@ -5,7 +5,6 @@ import { TodoItem } from './TodoItem';
 export const TodoList = ({
     todoes,
     onTodoAddCLick,
-    onTodoDeleteClick
 }) => {
     return (
         <div style={{ width: "30%", margin: "10px auto" }}>
@@ -15,7 +14,7 @@ export const TodoList = ({
                     <TodoItem
                         key={todo._id}
                         {...todo}
-                        onTodoDeleteClick={onTodoDeleteClick} />
+                    />
                 ))}
             </ListGroup>
 

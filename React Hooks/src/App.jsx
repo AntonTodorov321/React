@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Header } from "./components/Header"
 import { TodoList } from "./components/TodoList";
 import { AddTodoModal } from "./components/AddTodoModal";
+import { TodoContext } from './contexts/TodoContext';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -49,23 +50,28 @@ function App() {
         });
 
         setTodoes(state => state.filter(x => x._id !== todoId));
-    }
+    };
+
+    const contextValue = {
+        onTodoDeleteClick
+    };
 
     return (
-        <div>
-            <Header />
-            <TodoList
-                todoes={todoes}
-                onTodoAddCLick={onTodoAddCLick}
-                onTodoDeleteClick={onTodoDeleteClick}
-            />
+        <TodoContext.Provider value={contextValue}>
+            <div>
+                <Header />
+                <TodoList
+                    todoes={todoes}
+                    onTodoAddCLick={onTodoAddCLick}
+                />
 
-            <AddTodoModal
-                onTodoAdd={onTodoAddSubmit}
-                show={showAddTodo}
-                onTodoAddClose={onTodoAddClose}
-            />
-        </div>
+                <AddTodoModal
+                    onTodoAdd={onTodoAddSubmit}
+                    show={showAddTodo}
+                    onTodoAddClose={onTodoAddClose}
+                />
+            </div>
+        </TodoContext.Provider>
     )
 }
 
