@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export default function useForm(initilaValues) {
-    const [values, setValues] = useState(submitHandler, initilaValues);
+export default function useForm(submitHandler, initilaValues) {
+    const [values, setValues] = useState(initilaValues);
 
-    const onChange = () => {
+    const onChange = (e) => {
         setValues(state => ({
             ...state,
             [e.target.name]: e.target.value
@@ -11,7 +11,7 @@ export default function useForm(initilaValues) {
     };
 
     const onSubmit = (e) => {
-        e.preventDEfault();
+        e.preventDefault();
 
         submitHandler(values);
     };
