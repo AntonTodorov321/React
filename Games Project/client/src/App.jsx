@@ -12,29 +12,46 @@ import GameCreate from "./components/game-create/GameCreate"
 import Login from "./components/login/Login"
 import Register from "./components/register/Register"
 import GameDetails from "./components/game-details/GameDetails"
+import Logout from "./components/logout/Logout"
 
 function App() {
-	const [auth, setAuth] = useState({});
+	const [auth, setAuth] = useState(() => {
+		localStorage.removeItem('accessToken');
+
+		return {};
+	});
 	const navigate = useNavigate();
 
-	const loginSubmitHandler = async values => {
-		const result = await authService.login(values.email, values.password);
+	const loginSubmitHandler = async ({ email, password }) => {
+		const result = await authService.login(email, password);
+		localStorage.setItem('accessToken', result.accessToken);
 
 		setAuth(result);
 		navigate(Path.Home);
 	};
 
-	const registerSubmitHandler = (values) => {
-		console.log(values);
+	const registerSubmitHandler = async ({ email, password }) => {
+		const result = await authService.register(email, password);
+		localStorage.setItem('accessToken', result.accessToken);
+
+		setAuth(result);
+		navigate(Path.Home);
+	};
+
+	const logoutHandler = () => {
+		setAuth({});
+		navigate(Path.Home);
+		localStorage.removeItem('accessToken');
 	};
 
 	const values = {
 		loginSubmitHandler,
 		registerSubmitHandler,
-		username: auth.username,
+		logoutHandler,
+		username: auth.username || auth.email,
 		email: auth.email,
-		isAuthenticated: !!auth.username
-	}
+		isAuthenticated: !!auth.accessToken
+	};
 
 	return (
 		<AuthContext.Provider value={values}>
@@ -48,6 +65,7 @@ function App() {
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					<Route path="/games/:gameId" element={<GameDetails />} />
+					<Route path={Path.Logout} element={<Logout />} />
 				</Routes>
 
 				<Home />
