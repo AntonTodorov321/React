@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import * as gameService from "../../services/gameService";
 import * as commentService from "../../services/commentServices";
+import AuthContext from "../../contexts/authContext";
 
 const initialState = {
     username: '',
@@ -10,6 +11,7 @@ const initialState = {
 }
 
 export default function () {
+    const { email } = useContext(AuthContext);
     const { gameId } = useParams();
     const [comments, setComments] = useState([]);
     const [game, setGame] = useState({});
@@ -35,11 +37,10 @@ export default function () {
 
         const newComment = await commentService.create(
             gameId,
-            formData.get('username'),
             formData.get('comment')
         );
 
-        setComments(state => [...state, newComment]);
+        setComments(state => [...state, { ...newComment, owner: { email } }]);
         resetFormHandler();
     };
 
@@ -68,9 +69,9 @@ export default function () {
                 <div className="details-comments">
                     <h2>Comments:</h2>
                     <ul>
-                        {comments.map(({ _id, username, text }) => (
+                        {comments.map(({ _id, text, owner: { email } }) => (
                             <li key={_id} className="comment">
-                                <p>{username}: {text}</p>
+                                <p>{email}: {text}</p>
                             </li>
                         ))}
 
@@ -83,7 +84,6 @@ export default function () {
             <article className="create-comment">
                 <label>Add new comment:</label>
                 <form className="form" onSubmit={addCommentHandler}>
-                    <input type="text" name="username" placeholder="username" onChange={changeHandler} value={formValues.username} />
                     <textarea name="comment" placeholder="Comment......" onChange={changeHandler} value={formValues.comment} />
                     <input className="btn submit" type="submit" value="Add Comment" />
                 </form>
