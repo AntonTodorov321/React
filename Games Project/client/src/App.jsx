@@ -27,8 +27,6 @@ function App() {
 					<Route path="/games/:gameId" element={<GameDetails />} />
 					<Route path={Path.Logout} element={<Logout />} />
 				</Routes>
-
-				<Home />
 			</div>
 		</AuthProvider>
 	)

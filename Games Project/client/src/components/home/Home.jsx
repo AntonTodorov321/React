@@ -1,7 +1,11 @@
-export default function Home() {
+import withAuth from "../../HOK/withAuth";
+
+function Home({
+    email
+}) {
     return (
         <section id="welcome-world">
-
+            <p>{email}</p>
             <div className="welcome-message">
                 <h2>ALL new games are</h2>
                 <h3>Only in GamesPlay</h3>
@@ -53,3 +57,5 @@ export default function Home() {
         </section>
     );
 }
+
+export default withAuth(Home);
