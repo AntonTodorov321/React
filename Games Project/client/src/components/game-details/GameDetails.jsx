@@ -12,11 +12,15 @@ const initialState = {
 };
 
 export default function () {
-    const { email } = useContext(AuthContext);
+    const { email, _id } = useContext(AuthContext);
     const { gameId } = useParams();
     const [comments, dispatch] = useReducer(reducer, [])
     const [game, setGame] = useState({});
     const [formValues, setFormValues] = useState(initialState);
+
+    console.log(_id);
+    console.log(game);
+
 
     useEffect(() => {
         gameService.getOne(gameId)
@@ -90,6 +94,13 @@ export default function () {
                     </ul>
 
                     {comments.length === 0 && <p className="no-comment">No comments.</p>}
+
+                    {_id === game._ownerId && (
+                        <div className="buttons">
+                            <a href="#" className="button">Edit</a>
+                            <a href="#" className="button">Delete</a>
+                        </div>
+                    )}
                 </div>
             </div>
 
