@@ -1,26 +1,24 @@
 import { useContext, useEffect, useReducer, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import * as gameService from "../../services/gameService";
 import * as commentService from "../../services/commentServices";
 import AuthContext from "../../contexts/authContext";
 import reducer from './commentReducer';
+import Path from "../../paths";
+import {pathToUrl} from "../../utils/pathUtils";
 
 const initialState = {
     username: '',
     comment: ''
 };
 
-export default function () {
+export default function GameDetails() {
     const { email, _id } = useContext(AuthContext);
     const { gameId } = useParams();
     const [comments, dispatch] = useReducer(reducer, [])
     const [game, setGame] = useState({});
     const [formValues, setFormValues] = useState(initialState);
-
-    console.log(_id);
-    console.log(game);
-
 
     useEffect(() => {
         gameService.getOne(gameId)
@@ -97,8 +95,8 @@ export default function () {
 
                     {_id === game._ownerId && (
                         <div className="buttons">
-                            <a href="#" className="button">Edit</a>
-                            <a href="#" className="button">Delete</a>
+                            <Link to={pathToUrl(Path.GameEdit, { gameId })} className="button">Edit</Link>
+                            <Link to="/games/:gameId/delete" className="button">Delete</Link>
                         </div>
                     )}
                 </div>

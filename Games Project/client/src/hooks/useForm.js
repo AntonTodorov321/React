@@ -1,7 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function useForm(submitHandler, initilaValues) {
     const [values, setValues] = useState(initilaValues);
+
+    useEffect(() => {
+        setValues(initilaValues);
+    }, [initilaValues])
 
     const onChange = (e) => {
         setValues(state => ({
@@ -15,6 +19,7 @@ export default function useForm(submitHandler, initilaValues) {
 
         submitHandler(values);
     };
+
 
     return {
         values,

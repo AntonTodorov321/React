@@ -19,3 +19,9 @@ export const getOne = async (gameId) => {
 
     return result;
 }
+
+export const edit = async (gameId, gameData) => {
+    const result = await request.put(`${baseUrl}/${gameId}`, gameData);
+
+    return result;
+}
