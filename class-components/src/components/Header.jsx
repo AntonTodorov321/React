@@ -3,8 +3,9 @@ import { Component } from "react";
 import { AppstoreOutlined, MailOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
 import TodoContext from "../context/TodoContext";
+import withNavigate from "../HOK/withNavigate";
 
-export default class Header extends Component {
+class Header extends Component {
     render() {
         const items = [
             {
@@ -27,6 +28,7 @@ export default class Header extends Component {
                 ),
             },
         ];
+
         return (
             <TodoContext.Consumer>
                 {({ name }) => {
@@ -39,3 +41,5 @@ export default class Header extends Component {
         );
     };
 };
+
+export default withNavigate(Header);
