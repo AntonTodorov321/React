@@ -2,6 +2,7 @@ import { Component } from 'react';
 
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { Menu } from 'antd';
+import TodoList from './TodoList';
 
 const items = [
     {
@@ -68,11 +69,11 @@ class App extends Component {
             todoes: [],
             name: 'Pesho'
         };
+
+        this.toggleTodo = this.toggleTodo.bind(this);
     };
 
     componentDidMount() {
-        console.log('componentDidMount');
-
         fetch('http://localhost:3030/jsonstore/todoes')
             .then(res => res.json())
             .then(data => {
@@ -82,10 +83,29 @@ class App extends Component {
             });
     };
 
+    toggleTodo(todoId) {
+        this.setState({
+            todoes: this.state.todoes.map(todo => todo.id === todoId ? { ...todo, isCompleted: !todo.isCompleted } : todo)
+        });
+    };
+
+    removeTodo(todoId) {
+        this.setState({
+            todoes: this.state.todoes.filter(todo => todo.id !== todoId)
+        });
+    };
+
     render() {
         return (
             <>
                 <Menu mode="horizontal" items={items} />
+                <h1>{this.state.name}</h1>
+
+                <TodoList
+                    todoes={this.state.todoes}
+                    toggleTodo={this.toggleTodo}
+                    removeTodo={this.removeTodo.bind(this)}
+                />
             </>
         );
     }
