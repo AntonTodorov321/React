@@ -6,7 +6,7 @@ import * as commentService from "../../services/commentServices";
 import AuthContext from "../../contexts/authContext";
 import reducer from './commentReducer';
 import Path from "../../paths";
-import {pathToUrl} from "../../utils/pathUtils";
+import { pathToUrl } from "../../utils/pathUtils";
 
 const initialState = {
     username: '',
