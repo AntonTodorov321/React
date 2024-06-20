@@ -1,5 +1,5 @@
 import { useContext, useEffect, useReducer, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 import * as gameService from "../../services/gameService";
 import * as commentService from "../../services/commentServices";
@@ -16,6 +16,7 @@ const initialState = {
 export default function GameDetails() {
     const { email, _id } = useContext(AuthContext);
     const { gameId } = useParams();
+    const navigate = useNavigate();
     const [comments, dispatch] = useReducer(reducer, [])
     const [game, setGame] = useState({});
     const [formValues, setFormValues] = useState(initialState);
@@ -36,7 +37,7 @@ export default function GameDetails() {
 
     const resetFormHandler = () => {
         setFormValues(initialState);
-    }
+    };
 
     const addCommentHandler = async (e) => {
         e.preventDefault();
@@ -64,6 +65,16 @@ export default function GameDetails() {
             ...state,
             [e.target.name]: e.target.value
         }));
+    };
+
+    const deleteButtonClickHandler = async () => {
+        const isConfirmed = confirm(`Are you sure you want to delete ${game.title}`);
+
+        if (isConfirmed) {
+            await gameService.remove(gameId);
+
+            navigate('/games');
+        };
     };
 
     return (
@@ -96,7 +107,7 @@ export default function GameDetails() {
                     {_id === game._ownerId && (
                         <div className="buttons">
                             <Link to={pathToUrl(Path.GameEdit, { gameId })} className="button">Edit</Link>
-                            <Link to="/games/:gameId/delete" className="button">Delete</Link>
+                            <button className="button" onClick={deleteButtonClickHandler}>Delete</button>
                         </div>
                     )}
                 </div>
